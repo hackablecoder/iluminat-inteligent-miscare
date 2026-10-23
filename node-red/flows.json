@@ -1,0 +1,172 @@
+[
+    {
+        "id": "8f732020cae1bebf",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "7b94c791ddcb55b0",
+        "type": "mqtt in",
+        "z": "8f732020cae1bebf",
+        "name": "",
+        "topic": "ps1a/ducu/iluminat",
+        "qos": "0",
+        "datatype": "utf8",
+        "broker": "1479f047c7340a10",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 290,
+        "y": 300,
+        "wires": [
+            [
+                "1363368032f43551",
+                "4b9e8faf379c6780"
+            ]
+        ]
+    },
+    {
+        "id": "1363368032f43551",
+        "type": "debug",
+        "z": "8f732020cae1bebf",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 540,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "d47a7792ca040e57",
+        "type": "sqlite",
+        "z": "8f732020cae1bebf",
+        "mydb": "188eaa3c83a12c48",
+        "sqlquery": "msg.topic",
+        "sql": "",
+        "name": "salvare_miscare",
+        "x": 660,
+        "y": 420,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4b9e8faf379c6780",
+        "type": "function",
+        "z": "8f732020cae1bebf",
+        "name": "function 1",
+        "func": "const mesaj = String(msg.payload).replace(/'/g, \"''\");\nconst topic = \"ps1a/duku/iluminat\";\n\nmsg.topic = \"INSERT INTO evenimente_miscare (topic, mesaj) VALUES ('\"\n    + topic + \"', '\" + mesaj + \"')\";\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 480,
+        "y": 420,
+        "wires": [
+            [
+                "d47a7792ca040e57"
+            ]
+        ]
+    },
+    {
+        "id": "aabcdcc8a85ce0b2",
+        "type": "inject",
+        "z": "8f732020cae1bebf",
+        "name": "Citeste_istoricul",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 300,
+        "y": 540,
+        "wires": [
+            [
+                "a2a6055ebbd76ae4"
+            ]
+        ]
+    },
+    {
+        "id": "a2a6055ebbd76ae4",
+        "type": "sqlite",
+        "z": "8f732020cae1bebf",
+        "mydb": "188eaa3c83a12c48",
+        "sqlquery": "fixed",
+        "sql": "SELECT * FROM evenimente_miscare ORDER BY id DESC;",
+        "name": "Citeste_istoricul",
+        "x": 660,
+        "y": 540,
+        "wires": [
+            [
+                "1363368032f43551"
+            ]
+        ]
+    },
+    {
+        "id": "1479f047c7340a10",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "test.mosquitto.org",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "188eaa3c83a12c48",
+        "type": "sqlitedb",
+        "db": "/home/alex/proiect-ps/iluminat.db",
+        "mode": "RWC"
+    },
+    {
+        "id": "084046d9c76c3b11",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-node-sqlite": "2.0.1"
+        }
+    }
+]

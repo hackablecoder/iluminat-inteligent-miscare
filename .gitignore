@@ -1,0 +1,11 @@
+
+# Fisiere temporare
+*~
+*.tmp
+*.log
+
+# Configuratii locale Node-RED
+.config.*.json
+
+# Dependinte Node.js, daca vor fi adaugate ulterior
+node_modules/
